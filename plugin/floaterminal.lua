@@ -36,6 +36,7 @@ function M.toggle()
     vim.api.nvim_buf_call(state.buf, function()
       vim.fn.termopen(vim.o.shell)
       vim.keymap.set('t', '<ESC>', '<C-\\><C-n>', { buffer = state.buf, noremap = true })
+      vim.keymap.set('t', '<ESC><ESC>', function() M.close() end, { buffer = state.buf, noremap = true, nowait = true })
     end)
   end
 
