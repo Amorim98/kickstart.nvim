@@ -230,17 +230,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.hl.on_yank() end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'java',
-  group = vim.api.nvim_create_augroup('nvim-jdtls', { clear = true }),
-  callback = function()
-    require('jdtls').start_or_attach({
-      cmd = { 'jdtls' },
-      root_dir = vim.fs.dirname(vim.fs.find({ 'pom.xml', 'build.gradle', '.git' }, { upward = true })[1]),
-    })
-  end,
-})
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -297,8 +286,17 @@ require('lazy').setup({
     },
   },
 
-  { -- Java LSP
-    'mfussenegger/nvim-jdtls',
+  { -- Java with Spring Boot & Lombok support
+    'nvim-java/nvim-java',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'mfussenegger/nvim-dap',
+      'JavaHello/spring-boot.nvim',
+    },
+    config = function()
+      require('java').setup()
+      vim.lsp.enable('jdtls')
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -629,10 +627,9 @@ require('lazy').setup({
       -- You can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'lua-language-server', -- Lua Language server
-        'stylua', -- Used to format Lua code
-        'google-java-format', -- Used to format Java code
-        -- You can add other tools here that you want Mason to install
+        'lua-language-server',
+        'stylua',
+        'google-java-format',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
