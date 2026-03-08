@@ -81,6 +81,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'java-debug-adapter',
       },
     }
 
@@ -128,6 +129,17 @@ return {
         -- On Windows delve must be run attached or it crashes.
         -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
         detached = vim.fn.has 'win32' == 0,
+      },
+    }
+
+    -- Java DAP configuration
+    dap.configurations.java = {
+      {
+        type = 'java',
+        request = 'launch',
+        name = 'Debug (Attach)',
+        hostName = '127.0.0.1',
+        port = 5005,
       },
     }
   end,
