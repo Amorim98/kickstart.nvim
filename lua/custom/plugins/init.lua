@@ -1,5 +1,23 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
-return {}
+return {
+  {
+    'obsidian-nvim/obsidian.nvim',
+    version = '*',
+    lazy = true,
+    cmd = { 'Obsidian' },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      ui = {
+        enable = true,
+      },
+      legacy_commands = false,
+      workspaces = {
+        {
+          name = 'personal',
+          path = '/mnt/c/dev/notes',
+        },
+      },
+    },
+  },
+}
